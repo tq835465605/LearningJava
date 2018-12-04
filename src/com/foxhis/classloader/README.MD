@@ -22,7 +22,7 @@
 
 寻找类加载器，先来一个小例子
 
-```
+***
   package com.neo.classloader;
    public class ClassLoaderTest {
      public static void main(String[] args) {
@@ -32,7 +32,7 @@
         System.out.println(loader.getParent().getParent());
     }
   }
-```
+***
 运行后，输出结果：
 ```
 sun.misc.Launcher$AppClassLoader@64fef26a
