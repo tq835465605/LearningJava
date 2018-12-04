@@ -37,7 +37,7 @@ get myKey
 
 Redis支持五种数据类型：string（字符串），hash（哈希），list（列表），set（集合）及zset(sorted set：有序集合)。
 
-String
+#### String
 
 实例
 ```
@@ -49,3 +49,67 @@ redis 127.0.0.1:6379> GET name
 在以上实例中我们使用了 Redis 的 SET 和 GET 命令。键为 name，对应的值为 runoob。
 
 注意：一个键最大能存储512MB。
+
+#### Hash（哈希）
+Redis hash 是一个键值(key=>value)对集合。
+
+Redis hash 是一个 string 类型的 field 和 value 的映射表，hash 特别适合用于存储对象。
+
+实例
+```
+redis> HMSET myhash field1 "Hello" field2 "World"
+"OK"
+redis> HGET myhash field1
+"Hello"
+redis> HGET myhash field2
+"World"
+```
+
+实例中我们使用了 Redis HMSET, HGET 命令，HMSET 设置了两个 field=>value 对, HGET 获取对应 field 对应的 value。
+
+
+#### List（列表）
+Redis 列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）。
+
+实例
+```
+redis 127.0.0.1:6379> lpush runoob redis
+(integer) 1
+redis 127.0.0.1:6379> lpush runoob mongodb
+(integer) 2
+redis 127.0.0.1:6379> lpush runoob rabitmq
+(integer) 3
+redis 127.0.0.1:6379> lrange runoob 0 10
+1) "rabitmq"
+2) "mongodb"
+3) "redis"
+redis 127.0.0.1:6379>
+```
+列表最多可存储 232 - 1 元素 (4294967295, 每个列表可存储40多亿)。
+
+#### Set（集合）
+Redis的Set是string类型的无序集合。
+
+集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。
+
+sadd 命令
+添加一个 string 元素到 key 对应的 set 集合中，成功返回1，如果元素已经在集合中返回 0，如果 key 对应的 set 不存在则返回错误。
+```
+sadd key member
+```
+实例
+```
+redis 127.0.0.1:6379> sadd runoob redis
+(integer) 1
+redis 127.0.0.1:6379> sadd runoob mongodb
+(integer) 1
+redis 127.0.0.1:6379> sadd runoob rabitmq
+(integer) 1
+redis 127.0.0.1:6379> sadd runoob rabitmq
+(integer) 0
+redis 127.0.0.1:6379> smembers runoob
+
+1) "redis"
+2) "rabitmq"
+3) "mongodb"
+```
