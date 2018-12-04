@@ -61,6 +61,7 @@ null
 
 *  全盘负责，当一个类加载器负责加载某个Class时，该Class所依赖的和引用的其他Class也将由该类加载器负责载入，除非显示使用另外一个类加载器来载入
 
+<<<<<<< HEAD
 *  父类委托，先让父类加载器试图加载该类，只有在父类加载器无法加载该类时才尝试从自己的类路径中加载该类
 
 *  缓存机制，缓存机制将会保证所有加载过的Class都会被缓存，当程序中需要使用某个Class时，类加载器先从缓存区寻找该Class，只有缓存区不存在，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存入缓存区。这就是为什么修改了Class后，必须重启JVM，程序的修改才会生效
@@ -104,3 +105,6 @@ ClassLoader.loadClass()：只干一件事情，就是将.class文件加载到jvm
 ### 参考
 <http://www.cnblogs.com/ityouknow/p/5603287.html>
   
+=======
+  
+>>>>>>> branch 'master' of https://github.com/tq835465605/LearningJava.git
