@@ -28,6 +28,12 @@ public class Rxtxcomm {
 		// TODO Auto-generated method stub
 
 		CommPortIdentifier commPortIdentifier = CommPortIdentifier.getPortIdentifier(COM);
+		if(commPortIdentifier.isCurrentlyOwned())
+		{
+			System.out.println("Error: Port is currently in use");
+			System.exit(-1);
+			return ;
+		}
 		CommPort commPort = commPortIdentifier.open(Rxtxcomm.class.getName(),1000);
 		SerialPort serialPort =null;
 		if(commPort instanceof SerialPort)
