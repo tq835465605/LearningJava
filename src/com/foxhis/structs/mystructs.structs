@@ -1,0 +1,47 @@
+package com.foxhis.structs;
+
+struct SPMSifHdr{
+	uint32_t ui32Synch1;		//Message synch1 = 0x55555555.
+	uint32_t ui32Synch2;		//Message synch1 = 0xaaaaaaaa.
+	uint16_t ui16Version;	//Header format version = 1.
+	uint32_t ui32Cmd;		//field Command
+	uint32_t ui32BodySize;	//field size of message body.
+}
+
+struct SPMSifRegisterMsg
+{
+	SPMSifHdr	hdr1;//18
+	char		szLicense[20];//20
+	char		szApplName[20];//20
+	int32_t		nRet;//4
+}
+
+struct SPMSifUnregisterMsg
+{
+	SPMSifHdr	hdr1;
+	int32_t		nRet;
+}
+
+struct SPMSifEncodeKcdRmtMsg
+{
+	SPMSifHdr	hdr1;//18
+	char		ff;//1
+	char		Dta[512];//512
+	char        dd[3];//3
+	char        ss[3];//3
+	int32_t		Debug;//4
+	char		szOpId[10];//10
+	char		szOpFirst[16];//16
+	char		szOpLast[16];//16
+}
+
+struct SPMSifReturnKcdLclMsg
+{
+	SPMSifHdr	hdr1;
+	char		ff;
+	char		Dta[512];
+	int32_t		Debug;
+	char		szOpId[10];
+	char		szOpFirst[16];
+	char		szOpLast[16];
+}
