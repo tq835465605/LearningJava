@@ -31,13 +31,24 @@ public class TCPSocketExecutor extends AbstractSocketExecutor{
 		// TODO Auto-generated constructor stub
 		super();
 	}
-	
+	/**
+	 * 发送请求，默认编码
+	 * @param str
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 */
 	public void setRequest(String str) throws UnsupportedEncodingException, IOException
 	{
 		super.request(str, DEFAULT_CHARSET);
 		charset  = DEFAULT_CHARSET;
 	}
 	
+	/**
+	 * 发送请求，指定编码
+	 * @param str
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 */
 	public void setRequest(String str,String charset) throws UnsupportedEncodingException, BuldPoolException, IOException
 	{
 		super.request(str, charset);
@@ -69,9 +80,11 @@ public class TCPSocketExecutor extends AbstractSocketExecutor{
         catch (Exception e) {
 			// TODO: handle exception
         	System.out.println(""+e);
+        	super.hasbreak();
 		}
         finally {
 			super.back();
+			
 		}
         return  responseResult.toString();
 	}

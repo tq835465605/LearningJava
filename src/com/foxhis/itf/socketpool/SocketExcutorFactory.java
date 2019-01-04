@@ -15,26 +15,36 @@ public class SocketExcutorFactory {
         this(host, port,connecttimeout,readtimeout ,true);  
     }  
     
-    public void buildSocketPool() throws Exception{
+    /**
+     * 构建池
+     */
+    public void buildSocketPool(){
     	
     	pool.buildPoolPart();
     }
-    
+    /**
+     * 销毁池
+     */
     public void distroySocketPool()
     {
     	pool.distroy();
     }
     
+    /**
+     * 判断是否池化
+     * @return
+     */
     public boolean isIniPool()
     {
     	return pool.isInitSocketContainer();
     }
     
     
-    /**
-     * 从工厂里取出一个tcpsocket
-     * @return
-     */
+  /**
+      * 生成一个tcp的socket，并用来发送请求与接收反馈信息
+   * @param socketMember 从池中获取到的
+   * @return TCPSocketExecutor
+   */
     public TCPSocketExecutor getTCPSocketExcutor(SocketMember socketMember) 
     {
     	TCPSocketExecutor tcpSocketExecutor=null;
@@ -42,7 +52,11 @@ public class SocketExcutorFactory {
     	return tcpSocketExecutor;
     }
     
-    TCPSocketExecutor tcpSocketExecutor=null;
+    
+    /**
+     * 生成一个tcp的socket，此时的tcpsocket还没有socketmember，需要手动设置，并用来发送请求与接收反馈信息
+  * @return TCPSocketExecutor
+  */
     public TCPSocketExecutor getTCPSocketExcutor() 
     {
     	TCPSocketExecutor tcpSocketExecutor=null;
@@ -50,6 +64,11 @@ public class SocketExcutorFactory {
     	return tcpSocketExecutor;
     }
     
+    /**
+          * 从池中获取一个MemberSocket
+     * @return
+     * @throws Exception 如果没有可用的，则会重构池，如果这个时候服务端是关闭的，那会出现重构异常
+     */
     public SocketMember getMemberSocket() throws Exception
     {
     	return pool.getMemberSocketFromPool();

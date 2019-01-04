@@ -6,8 +6,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
-import org.apache.commons.io.IOUtils;
-
 /**
   * 抽象出socket服务
  * @author Administrator
@@ -34,15 +32,11 @@ public class AbstractSocketExecutor {
         }  
 		host=socket.getInetAddress().getHostName();  
         port=socket.getPort();
+       
 	}
 
     public AbstractSocketExecutor(SocketMember socketMember){  
-        this.socketMember=socketMember;  
-        if(socketMember!=null){  
-            this.socket=socketMember.getSocket();  
-        }  
-        host=socket.getInetAddress().getHostName();  
-        port=socket.getPort();  
+        setSocketMember(socketMember);
     }  
     
     public AbstractSocketExecutor()
@@ -98,12 +92,12 @@ public class AbstractSocketExecutor {
 //        catch (IOException e) { 
 //            e.printStackTrace(); 
 //        }
-    	IOUtils.closeQuietly(in);
-    	IOUtils.closeQuietly(out);
-    	IOUtils.closeQuietly(socket);
-    	in=null;
-    	out=null;
-    	socket=null;
+//    	IOUtils.closeQuietly(in);
+//    	IOUtils.closeQuietly(out);
+//    	IOUtils.closeQuietly(socket);
+//    	in=null;
+//    	out=null;
+//    	socket=null;
         socketMember.setInUse(false);  
     }  
     

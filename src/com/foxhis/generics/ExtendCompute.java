@@ -9,7 +9,7 @@ import java.util.concurrent.FutureTask;
 
 /**
  * 通过concurrentHashMap实现高并发缓存
- * @author Administrator
+ * @author tq
  *
  * @param <T>
  * @param <V>

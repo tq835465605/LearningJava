@@ -26,7 +26,7 @@ public class SocketPool implements Serializable{
 	//读取超时设置
 	private int readTimeout;
 	//初始容量大小
-	private transient int iniSize = 1;
+	private transient int iniSize = 3;
 	//最大容量大小
 	private transient int maxSize = 1<<8;
 	//默认主机
@@ -34,7 +34,7 @@ public class SocketPool implements Serializable{
 	//默认端口
 	private static final int DEFAULT_PORT = 6666;
 	//默认初始容量
-	private static final int DEFAULT_INI_SIZE = 1;
+	private static final int DEFAULT_INI_SIZE = 3;
 	//默认最大容量
 	private static final int DEFAULT_MAX_SIZE = 10;
 	//默认连接超时时间
@@ -88,14 +88,13 @@ public class SocketPool implements Serializable{
 		this.maxSize = maxsize;
 		this.connectTimeout = connecttimeout;
 		this.readTimeout = readtimeout;
-		//buildPoolPart();
+		buildPoolPart();
 		
 	}
 	
 	public Socket creatSocket() throws Exception
 	{
 		Socket socket = new Socket();        
-
 		socket.connect(new InetSocketAddress(host, port), connectTimeout);
 		socket.setTcpNoDelay(true);
 		socket.setKeepAlive(true);
@@ -104,19 +103,24 @@ public class SocketPool implements Serializable{
 		return socket;
 	}
 
-	public List<SocketMember> buildPoolPart() throws Exception
+	public List<SocketMember> buildPoolPart()
 	{
 		 List<SocketMember> poolPart=new ArrayList<SocketMember>(iniSize);  
 		 SocketMember member=null;  
 		 for(int i=0;i<iniSize;i++)
 		 {
 			 Socket socket=null;
-			 socket = creatSocket();
-			 member=new SocketMember();  
-			 member.setSocket(socket);  
-			 poolPart.add(member);  
-
+			 try {
+				 socket = creatSocket();
+				 member=new SocketMember();  
+				 member.setSocket(socket);  
+				 poolPart.add(member);  
+			 } catch (Exception e) {
+				 // TODO Auto-generated catch block
+				 e.printStackTrace();
+			 }
 		 }
+		 //假如初始容量不够inisize会自己扩充
 		 if(poolPart.size()>0){  
 			 socketContainer.addAll(poolPart);  
 		 }
@@ -131,7 +135,7 @@ public class SocketPool implements Serializable{
 		 return poolPart;  
 	}
 	
-	public SocketMember getMemberSocketFromPool() throws Exception
+	public SocketMember getMemberSocketFromPool() throws BuldPoolException
 	{
 		SocketMember socketMember=null;
 		ReentrantLock thislock = this.lock;

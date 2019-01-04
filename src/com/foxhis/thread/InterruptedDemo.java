@@ -8,8 +8,9 @@ public class InterruptedDemo {
 		Thread thread =new Thread(demo);
 		thread.start();
 		System.out.println(thread.getState());
+		Thread.sleep(100);
 		thread.interrupt();	
-		thread.join();
+		//thread.join();
 		System.out.println(thread.getState());
 		System.out.println(thread.getState());
 		System.out.println(thread.getState());
@@ -45,7 +46,7 @@ public class InterruptedDemo {
 		public void run() {
 			// TODO Auto-generated method stub
 			
-			flag:while(true)
+			while(!Thread.currentThread().isInterrupted())
 			{
 				for(int i=0;i<100;i++)
 				{
@@ -54,16 +55,17 @@ public class InterruptedDemo {
 					{
 						System.out.println("i=50开始堵塞");
 						try {
-							Thread.currentThread().sleep(100);
+							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							System.out.println("阻塞异常");
-							break flag;
+							Thread.currentThread().interrupt();
+							break;
 						}
 					}
 				}
 			}
-		System.out.println("线程停止");
+		      System.out.println("线程停止");
 		}
 		
 	}
