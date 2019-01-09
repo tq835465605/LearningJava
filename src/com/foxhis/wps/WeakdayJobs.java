@@ -3,6 +3,7 @@ package com.foxhis.wps;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
   * 将周报文件放入指定的目录然后获取里面的内容，做解析获取周报的格式内容
@@ -105,6 +108,7 @@ public class WeakdayJobs {
 		doWriteOutPut();
 	}
 
+	//读
 	public static String getWeakMsg(File wpsfile) throws FileNotFoundException, IOException
 	{
 		HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(wpsfile));
@@ -116,7 +120,63 @@ public class WeakdayJobs {
 		workbook.close();
 		return string;
 	}
+	//写
+	public static void writeWeakMsg(File wpsfile,List<Map<String,String>> dataList) throws FileNotFoundException, IOException
+	{
+		if(!wpsfile.exists()) wpsfile.createNewFile();
+		HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(wpsfile));
+		HSSFSheet sheet = workbook.getSheetAt(0);	
+		
+		/**
+               * 删除原有数据，除了属性列
+         *//*
+        int rowNumber = sheet.getLastRowNum();    // 第一行从0开始算
+        System.out.println("原始数据总行数，除属性列：" + rowNumber);
+        for (int i = 1; i <= rowNumber; i++) {
+            Row row = sheet.getRow(i);
+            sheet.removeRow(row);
+        }
+        */
+		int rowNumber = sheet.getLastRowNum();    // 第一行从0开始算
+		System.out.println("getLastRowNum"+rowNumber);
+		System.out.println("getPhysicalNumberOfRows"+sheet.getPhysicalNumberOfRows());
+		if(sheet.getPhysicalNumberOfRows()<=0)
+		{
+			Row row = sheet.createRow(0);
+			int i=0;
+			// 在一行内循环
+			row.createCell(i++).setCellValue("姓名");
+			row.createCell(i++).setCellValue("邮件地址");
+			row.createCell(i++).setCellValue("手机");
+		}
+		/**
+                   * 往Excel中写新数据
+         */
+        for (int j = 0; j < dataList.size(); j++) {
+            // 创建一行：从第二行开始，跳过属性列
+        	
+            Row row = sheet.createRow(rowNumber+j+1);
+            
+            // 得到要插入的每一条记录
+            Map<String,String> dataMap = dataList.get(j);
+            String name = dataMap.get("name").toString();
+            String address = dataMap.get("mail").toString();
+            String phone = dataMap.get("phone").toString();
 
+            int k=0;
+            Cell first = row.createCell(k++);
+            first.setCellValue(name);
+            Cell second = row.createCell(k++);
+            second.setCellValue(address);
+            Cell third = row.createCell(k++);
+            third.setCellValue(phone);
+           
+        }
+        workbook.write(new FileOutputStream(wpsfile));
+		//System.out.println(string);
+		workbook.close();
+		
+	}
     /**
      * 匹配每行的接口类型关键字
      * @param source 每行数据
