@@ -48,7 +48,7 @@
 			<groupId>org.jvnet.com4j</groupId>
 			<artifactId>com4j</artifactId>
 			<version>2.1</version>
-		</dependency>
+		</dependency> 
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -94,6 +94,12 @@
             <artifactId>nekohtml</artifactId>
             <version>1.9.6.2</version>
         </dependency>
+         <dependency>
+            <groupId>org.eclipse.swt.win32.win32</groupId>
+            <artifactId>x86</artifactId>
+            <version>3.3.0-v3346</version>
+        </dependency>
+        
 	</dependencies>
 
 	<build>

@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.foxhis.trustface.ClassFactory;
+import com.foxhis.trustface._DTrustFaceCtrl;
 import com.foxhis.wps.ItfType;
 import com.foxhis.wps.WeakdayJobs;
 import com.foxhis.wps.WorkType;
@@ -122,6 +124,12 @@ public class JunitVerison {
 		System.out.println(WeakdayJobs.hbMsg("1个电话，2个财务，2个电话，1个门锁"));
 		
 	}
-	
+	@Test
+	public void textocx()
+	{
+		_DTrustFaceCtrl dTrustFaceCtrl = ClassFactory.createTrustFaceCtrl();
+		short resultt=dTrustFaceCtrl.initControl();
+		System.out.println(resultt);
+	}
 
 }
