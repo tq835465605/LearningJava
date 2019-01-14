@@ -13,7 +13,7 @@ public interface ITrustFace {
 	final String showFaceWindow="ShowFaceWindow";
 	final String getFaceVerifyPackage="GetFaceVerifyPackage";
 	final String getFaceImageData="GetFaceImageData";
-	final String setResultMessage="GetResultMessage";
+	final String setResultMessage="setResultMessage";
 	final String recaptureFace="RecaptureFace";
 	final String closeFaceWindow="CloseFaceWindow";
 	final String setServerSetting="SetServerSetting";

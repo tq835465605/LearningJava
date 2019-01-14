@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.foxhis.trustface.ClassFactory;
 import com.foxhis.trustface._DTrustFaceCtrl;
 import com.foxhis.wps.ItfType;
+import com.foxhis.wps.MonthJobs;
 import com.foxhis.wps.WeakdayJobs;
 import com.foxhis.wps.WorkType;
 
@@ -130,6 +131,12 @@ public class JunitVerison {
 		_DTrustFaceCtrl dTrustFaceCtrl = ClassFactory.createTrustFaceCtrl();
 		short resultt=dTrustFaceCtrl.initControl();
 		System.out.println(resultt);
+	}
+	
+	@Test
+	public void textPatten()
+	{
+		MonthJobs.getHebingNum("接口开发3个", "接口开发2个");
 	}
 
 }

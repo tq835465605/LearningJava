@@ -22,16 +22,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-/**
-  * 将周报文件放入指定的目录然后获取里面的内容，做解析获取周报的格式内容
- * @author Administrator
- *
- */
-public class WeakdayJobs {
+public class MonthJobs {
 
-	private static final String dir = "F:\\wps";
+private static final String dir = "F:\\wps";
 	
-	private static List<Map<String,Map<String,Integer>>> mapLists = new ArrayList<Map<String,Map<String,Integer>>>();
+	private static List<Map<String,String>> mapLists = new ArrayList<Map<String,String>>();
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -47,6 +42,10 @@ public class WeakdayJobs {
 			return;
 		}	
 	    File[] wpsfiles = weakdir.listFiles();
+	    Map<String,String> kaifaMap = new HashMap<String, String>();
+	    Map<String,String> tiaoshiMap = new HashMap<String, String>();
+	    Map<String,String> weihuMap = new HashMap<String, String>();
+	    Map<String,String> xiezhuMap = new HashMap<String, String>();
 		for(File wpsfile : wpsfiles)
 		{
 			//筛选.xls的文件
@@ -60,46 +59,50 @@ public class WeakdayJobs {
 			String weakmsg = getWeakMsg(wpsfile);
 			//分解周报内容
 			String[] mStrings =weakmsg.split("\\n");
-			Map<String,Map<String,Integer>> typeMap = new HashMap<String, Map<String,Integer>>();
+			
 			for(String string:mStrings) {
 				//遇到空或者小于长度5的退出
-				if(string==null || string.length()<=0 || string.length()<=5)
+				if(string==null || string.length()<=0)
 				{
 					break;
 				}
 				System.out.println(string);
-				String itftype = getMatches(string);
+				String[] itftype = getMatches(string);
 				//System.out.println("itftype:"+itftype);
-				if(itftype==null)
+				if(itftype==null || itftype.length<=2)
 				{
-					System.out.println(" 匹配接口类型失败，请检查!!!!!!");
-					itftype = "其他";
+					System.out.println("匹配接口类型失败，请检查!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+					break;
 				}
-				if(string.contains(WorkType.kaifa.getType()))//开发
+
+				if(!itftype[2].endsWith(G_CN))
+					itftype[2]=itftype[2]+G_CN;
+
+				if(string.contains(MonthType.kaifa.getType()))//开发
 				{	
-					getItfType(typeMap, WorkType.kaifa.getType(), itftype);
+					getItfType(kaifaMap, itftype);
 				}
-				if(string.contains(WorkType.tiaoshi.getType()))//调试
+				if(string.contains(MonthType.tiaoshi.getType()))//调试
 				{
-					getItfType(typeMap, WorkType.tiaoshi.getType(), itftype);
+					getItfType(tiaoshiMap,  itftype);
 				}
-				if(string.contains(WorkType.weihu.getType()))//维护
+				if(string.contains(MonthType.weihu.getType()))//维护
 				{
-					getItfType(typeMap, WorkType.weihu.getType(), itftype);
+					getItfType(weihuMap,  itftype);
 				}
-				if(string.contains(WorkType.xiezhu.getType()))//协助
+				if(string.contains(MonthType.xiezhu.getType()))//协助
 				{
-					getItfType(typeMap, WorkType.xiezhu.getType(), itftype);
-				}
-				if(string.contains(WorkType.xiezhuorweihu.getType()))//协助
-				{
-					getItfType(typeMap, WorkType.xiezhu.getType(), itftype);
+					getItfType(xiezhuMap,  itftype);
 				}
 
 			}
-			mapLists.add(typeMap);
-			System.out.println(typeMap);
+			
 		}	
+		mapLists.add(kaifaMap);
+		mapLists.add(tiaoshiMap);
+		mapLists.add(weihuMap);
+		mapLists.add(xiezhuMap);
+		System.out.println(mapLists);
 	    if(mapLists.isEmpty())
 	    {
 	    	System.err.println(dir+"里没有周报文件，请将周报文件放入该文件夹");
@@ -113,7 +116,9 @@ public class WeakdayJobs {
 	{
 		HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(wpsfile));
 		HSSFSheet sheet = workbook.getSheetAt(0);
-		HSSFRow  row = sheet.getRow(2);
+		//从0开始数
+		HSSFRow  row = sheet.getRow(12);
+		//从0开始数
 		HSSFCell cell = row.getCell(4);
 		String string = cell.getStringCellValue();
 		//System.out.println(string);
@@ -177,57 +182,59 @@ public class WeakdayJobs {
 		workbook.close();
 		
 	}
+	
+	private final static String F_EN = ":";
+	private final static String F_CN = "：";
+	private final static String G_CN = "，";
     /**
      * 匹配每行的接口类型关键字
      * @param source 每行数据
      * @return
      */
-	public static String getMatches(String source)
+	public static String[] getMatches(String source)
 	{
-		if(source.indexOf(ItfType.doorcard.getTypeName())>=0 || source.indexOf(ItfType.doorcard.getSecName())>=0)
-			return ItfType.doorcard.getTypeName();
-		if(source.indexOf(ItfType.police.getTypeName())>=0 || source.indexOf(ItfType.police.getSecName())>=0)
-			return ItfType.police.getTypeName();
-		if(source.indexOf(ItfType.sms.getTypeName())>=0 || source.indexOf(ItfType.sms.getSecName())>=0)
-			return ItfType.sms.getTypeName();
-		if(source.indexOf(ItfType.pbx.getTypeName())>=0 || source.indexOf(ItfType.pbx.getSecName())>=0)
-			return ItfType.pbx.getTypeName();
-		if(source.indexOf(ItfType.idcard.getTypeName())>=0 || source.indexOf(ItfType.idcard.getSecName())>=0)
-			return ItfType.idcard.getTypeName();
-		if(source.indexOf(ItfType.ctrlroom.getTypeName())>=0 || source.indexOf(ItfType.ctrlroom.getSecName())>=0)
-			return ItfType.ctrlroom.getTypeName();
-		if(source.indexOf(ItfType.vod.getTypeName())>=0 || source.indexOf(ItfType.vod.getSecName())>=0)
-			return ItfType.vod.getTypeName();
-		if(source.indexOf(ItfType.vip.getTypeName())>=0 || source.indexOf(ItfType.vip.getSecName())>=0)
-			return ItfType.vip.getTypeName();
-		if(source.indexOf(ItfType.fin.getTypeName())>=0 || source.indexOf(ItfType.fin.getSecName())>=0)
-			return ItfType.fin.getTypeName();
-		if(source.indexOf(ItfType.internet.getTypeName())>=0 || source.indexOf(ItfType.internet.getSecName())>=0)
-			return ItfType.internet.getTypeName();
-		if(source.indexOf(ItfType.cti.getTypeName())>=0 || source.indexOf(ItfType.cti.getSecName())>=0)
-			return ItfType.cti.getTypeName();
-
-		return null;
+		/*if(source.indexOf(":")>=0 )
+			return source.substring(source.indexOf(":")+1).endsWith("，")?source.substring(source.indexOf(":")+1):source.substring(source.indexOf(":")+1)+"，";
+		if(source.indexOf("：")>=0)
+			return source.substring(source.indexOf("：")+1).endsWith("，")? source.substring(source.indexOf(":")+1):source.substring(source.indexOf(":")+1)+"，";
+		return null;*/
+		/*if(source.indexOf(F_EN)>=0 )
+		{
+			String[] dod = source.split(F_EN);
+			if(!dod[1].endsWith(G_CN))
+				dod[1]=dod[1]+G_CN;
+			return dod;
+		}
+		if(source.indexOf(F_CN)>=0 )
+		{
+			String[] dod = source.split(F_CN);
+			if(!dod[1].endsWith(G_CN))
+				dod[1]=dod[1]+G_CN;
+			return dod;
+		}*/
+		StringTokenizer stringTokenizer = new StringTokenizer(source, "：:、");
+		int count = stringTokenizer.countTokens();
+		//System.out.println(count);
+		String[] strings = new String[count];
+		int i=0;
+		while (stringTokenizer.hasMoreElements()) {
+			String next = stringTokenizer.nextToken();
+			strings[i++] = next;
+		}
+		
+		return strings;
 	}
 
-	public static void getItfType(Map<String,Map<String,Integer>> typeMap,String worktype,String itftype)
+	public static void getItfType(Map<String,String> typeMap,String[] itftype)
 	{
-		if(typeMap.containsKey(worktype))
+		if(typeMap.containsKey(itftype[1]))
 		{
-			Map<String,Integer> reMap =typeMap.get(worktype);
-			if(reMap.containsKey(itftype))
-			{
-				int n =reMap.get(itftype).intValue();
-				reMap.put(itftype, ++n);
-			}
-			else {
-				reMap.put(itftype, 1);
-			}
+			String typestr =typeMap.get(itftype[1]);
+			typeMap.remove(itftype[1]);
+			typeMap.put(getHebingNum(itftype[1], itftype[1]), typestr+itftype[2]);
 		}
-		else {
-			Map<String, Integer> reMap = new HashMap<String, Integer>();
-			reMap.put(itftype, 1);
-			typeMap.put(worktype, reMap);
+		else {	
+			typeMap.put(itftype[1], itftype[2]);
 		}
 
 	}
@@ -238,7 +245,7 @@ public class WeakdayJobs {
 	 */
 	public static void doWriteOutPut() throws IOException {
 		//建立输出文件
-		File output = new File(dir+File.separator+"outwps.txt");
+		File output = new File(dir+File.separator+"outwps_month.txt");
 		if(output.exists())
 		{
 			output.delete();
@@ -249,82 +256,50 @@ public class WeakdayJobs {
 			output.createNewFile();
 		}
 		FileWriter writer  = new FileWriter(output,true);
-		int kaifaNum = 0;
-		int weihuNum = 0;
-		int tiaoshiNum = 0;
-		int xiezhuNum = 0;
-		StringBuilder kaifaStr = new StringBuilder();
-		StringBuilder weihuStr = new StringBuilder();
-		StringBuilder tiaoshiStr = new StringBuilder();
-		StringBuilder xiezhuStr = new StringBuilder();
 		
-		for(Map<String,Map<String,Integer>> mapType:mapLists)
+		
+		for(Map<String,String> mapType:mapLists)
 		{
+			StringBuilder kaifaStr = new StringBuilder();
 			Set<String> keyset = mapType.keySet();//开发，调试，维护，协助
-			for(String key:keyset)
+			Object [] strings =  keyset.toArray();
+			int k  = strings.length;
+			String start=(String)strings[0];
+			kaifaStr.append(mapType.get(start));
+			for(int i=0;i<k-1;i++)
 			{
-				Map<String,Integer> type = mapType.get(key);
-				Set<String> typeset = type.keySet();
-				if(key.equals(WorkType.kaifa.getType()))
-				{
-							
-					for(String typestr:typeset)
-					{
-						int num = type.get(typestr);
-						kaifaNum += num;
-						kaifaStr.append(num+"个");
-						kaifaStr.append(typestr);
-						kaifaStr.append("，");
-					}
-				}
-				if(key.equals(WorkType.tiaoshi.getType()))
-				{
-					for(String typestr:typeset)
-					{
-						int num = type.get(typestr);
-						tiaoshiNum += num;
-						tiaoshiStr.append(num+"个");
-						tiaoshiStr.append(typestr);
-						tiaoshiStr.append("，");
-					}
-				}
-				if(key.equals(WorkType.weihu.getType()))
-				{
-					
-					for(String typestr:typeset)
-					{
-						int num = type.get(typestr);
-						weihuNum +=num;
-						weihuStr.append(num+"个");
-						weihuStr.append(typestr);
-						weihuStr.append("，");
-					}
-				}
-				if(key.equals(WorkType.xiezhu.getType()))
-				{
-					
-					for(String typestr:typeset)
-					{
-						int num = type.get(typestr);
-						xiezhuNum += num;
-						xiezhuStr.append(num+"个");
-						xiezhuStr.append(typestr);
-						xiezhuStr.append("，");
-					}
-				}
-	
+				int j=i+1;
+				start = getHebingNum(start, (String)strings[j]);
+				kaifaStr.append(mapType.get(strings[j]));
 			}
+			writer.write(start+F_CN+hbMsg(kaifaStr.toString()));
+			writer.write("\r\n");
+			
 		}
-		writer.write(WorkType.kaifa.getNum()+"、接口开发"+kaifaNum+"个："+hbMsg(kaifaStr.toString()));
-		writer.write("\r\n");
-		writer.write(WorkType.tiaoshi.getNum()+"、接口调试"+tiaoshiNum+"个："+hbMsg(tiaoshiStr.toString()));
-		writer.write("\r\n");
-		writer.write(WorkType.weihu.getNum()+"、接口维护"+weihuNum+"个："+hbMsg(weihuStr.toString()));
-		writer.write("\r\n");
-		writer.write(WorkType.xiezhu.getNum()+"、接口协助"+xiezhuNum+"个："+hbMsg(xiezhuStr.toString()));
-		writer.write("\r\n");
 		writer.flush();
 		writer.close();
+	}
+	
+	/**
+	 * 将两个字符串中的数字部分相加，然后重新输出
+	 * @param source1
+	 * @param source2
+	 * @return
+	 */
+	public static String getHebingNum(String source1,String source2)
+	{
+		Pattern pattern = Pattern.compile("[^0-9]+");		
+		Matcher matcher1 = pattern.matcher(source1);
+		Matcher matcher2 = pattern.matcher(source2);
+		String num1 = matcher1.replaceAll("").trim();
+		String num2 = matcher2.replaceAll("").trim();
+		int total = Integer.valueOf(num1)+Integer.valueOf(num2);
+		Pattern patternNum = Pattern.compile("[0-9]+");	//匹配多个数字
+		Matcher matcherNum = patternNum.matcher(source1);
+		String result = matcherNum.replaceAll(String.valueOf(total));
+		//System.out.println(result);
+		return result;
+		
 	}
 	
 	/**
@@ -366,5 +341,4 @@ public class WeakdayJobs {
 		}
 		return sBuilder.toString();
 	}
-
 }
