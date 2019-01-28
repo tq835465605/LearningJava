@@ -2,7 +2,7 @@ package com.foxhis.wps;
 
 public enum ItfType {
 	//第二个为别名
-	doorcard("门锁","早餐"),
+	doorcard("门锁","ADEL"),
 	police("公安","police"),
 	sms("短信","sms"),
 	pbx("电话","华为"),

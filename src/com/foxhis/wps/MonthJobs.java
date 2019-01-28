@@ -240,7 +240,7 @@ private static final String dir = "F:\\wps";
 	}
 	
 	/**
-	 * 周报输出
+	 * 月报输出
 	 * @throws IOException
 	 */
 	public static void doWriteOutPut() throws IOException {
