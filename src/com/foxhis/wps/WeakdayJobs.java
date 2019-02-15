@@ -72,7 +72,7 @@ public class WeakdayJobs {
 				//System.out.println("itftype:"+itftype);
 				if(itftype==null)
 				{
-					System.out.println(" 匹配接口类型失败，请检查!!!!!!");
+					System.err.println(" 匹配接口类型失败，请检查!!!!!!");
 					itftype = "其他";
 				}
 				if(string.contains(WorkType.kaifa.getType()))//开发
