@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+      <aop:aspectj-autoproxy />
+      <bean id="parkproform" class ="com.foxhis.spring.aop.ParkPerform"></bean>
+      <bean id="pointcut" class ="com.foxhis.spring.aop.PointCut"></bean>
+      
+      <aop:config>
+      
+         <aop:aspect id="proform" ref="pointcut">
+           <aop:pointcut expression="execution(* com.foxhis.spring.aop.IPerformance.performance(..))" id="point"/>
+
+             <aop:before method="beforeProform" pointcut-ref="point"/>
+         
+             <aop:after-returning method="afterProform" pointcut-ref="point"/>
+             
+         </aop:aspect>
+      
+      
+      </aop:config>
+      
+        
+</beans>
