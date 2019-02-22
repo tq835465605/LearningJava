@@ -17,6 +17,15 @@ import java.util.jar.JarFile;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * class.forname与classloader区别
+ * 两者都是加载类
+ * 前者会把类中的静态块与静态变量以及给静态变量赋值的方法也加载
+ * 后者只是简单的类加载到jvm
+ * 
+ * 
+ * 
+ * */
 public class ClassLoaderDemo {
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, IOException {
