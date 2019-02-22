@@ -1,5 +1,16 @@
 package com.foxhis.generics;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 苹果 is a 水果 
+    装苹果的容器 is not a 装水果的容器 
+    <? super T>表示包括T在内的任何T的父类，<? extends T>表示包括T在内的任何T的子类
+    
+ * @author Administrator
+ *
+ */
 public class GenericsDemo {
 
 	public static void main(String[] args) {
@@ -9,16 +20,20 @@ public class GenericsDemo {
 		pf.getT().something();
 		Plat<? extends Fruit> pf1 = new Plat<Banana>(new Banana());
 		pf1.getT().something();
-		 String str2 = System.getProperty("java.ext.dirs");
-		 System.out.println(str2);
+//		 String str2 = System.getProperty("java.ext.dirs");
+//		 System.out.println(str2);
 
+		//Number is a superclass of Integer
+		List<? super Integer> foo3 = new ArrayList<Integer>();
+		List<? super Integer> foo4 = new ArrayList<Number>();
+		
 		 A a =new A();
 		 B b = new B();
 		 System.out.println(a instanceof B);//false
 		 System.out.println(b instanceof A);//true
 	}
 	
-	static class A extends Object{}
+	static class A {}
 	static class B extends A{}
 	
 
