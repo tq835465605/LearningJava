@@ -16,14 +16,14 @@ public class RabbitMQProducer {
 
 	public final static String QUEUE_NAME="rabbitMQ.test";
 
-	public static void main(String[] args) throws IOException, TimeoutException {
+	public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
 		// TODO Auto-generated method stub
 		//申明一个连接工厂
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");
-		//factory.setUsername("lp");
-		//factory.setPassword("");
-		//factory.setPort(2088);
+		factory.setPort(5672);
+		factory.setUsername("guest");
+		factory.setPassword("guest");
 		//创建一个连接
 		Connection connection =factory.newConnection();
 		//创建一个通道
@@ -32,10 +32,11 @@ public class RabbitMQProducer {
 		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		String message = "hello rabbitmq";
 		//发送消息到队列中
-		channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"));
+		channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
 
-		System.out.println("Producer publish message "+message);
+		System.out.println("Producer publish message ["+message+"]");
 		//关闭通道
+		
 		channel.close();
 		connection.close();
 	}
