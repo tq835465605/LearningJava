@@ -22,7 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * 两者都是加载类
  * 前者会把类中的静态块与静态变量以及给静态变量赋值的方法也加载
  * 后者只是简单的类加载到jvm
- * 
+ * 加载jar文件，并加载其类
  * 
  * 
  * */
