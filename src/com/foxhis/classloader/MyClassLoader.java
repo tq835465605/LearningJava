@@ -29,6 +29,9 @@ public class MyClassLoader extends ClassLoader{
 	//加载的目录
 	private String mlibPath;
 	
+	public MyClassLoader() {
+		// TODO Auto-generated constructor stub
+	}
 	public MyClassLoader(String mlibPath) {
 		// TODO Auto-generated constructor stub
 		this.mlibPath = mlibPath;
