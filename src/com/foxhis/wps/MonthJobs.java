@@ -212,7 +212,7 @@ private static final String dir = "F:\\wps";
 				dod[1]=dod[1]+G_CN;
 			return dod;
 		}*/
-		StringTokenizer stringTokenizer = new StringTokenizer(source, "：:、");
+		StringTokenizer stringTokenizer = new StringTokenizer(source, "：:、；");
 		int count = stringTokenizer.countTokens();
 		//System.out.println(count);
 		String[] strings = new String[count];

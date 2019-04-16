@@ -3,8 +3,12 @@ package com.foxhis.junit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Test;
 
@@ -137,6 +141,41 @@ public class JunitVerison {
 	public void textPatten()
 	{
 		MonthJobs.getHebingNum("接口开发3个", "接口开发2个");
+	}
+	
+	@Test
+	public void finalLists() throws InterruptedException
+	{
+		final Map<String,Object> lists =getLists();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				lists.remove("5");
+			}
+		}).start();
+        new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				lists.remove("3");
+			}
+		}).start();
+		Thread.currentThread().join(2000);
+		System.out.println(lists.toString());
+	}
+	
+	public Map<String,Object> getLists()
+	{
+		Map<String,Object> liStrings = new ConcurrentHashMap<String, Object>();
+		liStrings.put("1",123);
+		liStrings.put("2",434);
+		liStrings.put("3",942);
+		liStrings.put("4",323);
+		liStrings.put("5",345);
+		return liStrings;
 	}
 
 }
