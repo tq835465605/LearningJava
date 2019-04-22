@@ -184,7 +184,7 @@ public class WeakdayJobs {
      */
 	public static String getMatches(String source)
 	{
-		if(source.indexOf(ItfType.doorcard.getTypeName())>=0 || source.indexOf(ItfType.doorcard.getSecName())>=0)
+		/*if(source.indexOf(ItfType.doorcard.getTypeName())>=0 || source.indexOf(ItfType.doorcard.getSecName())>=0 )
 			return ItfType.doorcard.getTypeName();
 		if(source.indexOf(ItfType.police.getTypeName())>=0 || source.indexOf(ItfType.police.getSecName())>=0)
 			return ItfType.police.getTypeName();
@@ -205,9 +205,40 @@ public class WeakdayJobs {
 		if(source.indexOf(ItfType.internet.getTypeName())>=0 || source.indexOf(ItfType.internet.getSecName())>=0)
 			return ItfType.internet.getTypeName();
 		if(source.indexOf(ItfType.cti.getTypeName())>=0 || source.indexOf(ItfType.cti.getSecName())>=0)
-			return ItfType.cti.getTypeName();
-
+			return ItfType.cti.getTypeName();*/
+		
+        if(isContains(source, ItfType.passprot))
+        	return ItfType.passprot.getTypeName();
+        if(isContains(source, ItfType.doorcard))
+        	return ItfType.doorcard.getTypeName();
+        if(isContains(source, ItfType.police))
+        	return ItfType.police.getTypeName();
+        if(isContains(source, ItfType.sms))
+        	return ItfType.sms.getTypeName();
+        if(isContains(source, ItfType.pbx))
+        	return ItfType.pbx.getTypeName();
+        if(isContains(source, ItfType.idcard))
+        	return ItfType.idcard.getTypeName();
+        if(isContains(source, ItfType.ctrlroom))
+        	return ItfType.ctrlroom.getTypeName();
+        if(isContains(source, ItfType.vod))
+        	return ItfType.vod.getTypeName();
+        if(isContains(source, ItfType.vip))
+        	return ItfType.vip.getTypeName();
+        if(isContains(source, ItfType.fin))
+        	return ItfType.fin.getTypeName();
+        if(isContains(source, ItfType.internet))
+        	return ItfType.internet.getTypeName();
+        if(isContains(source, ItfType.cti))
+        	return ItfType.cti.getTypeName();
 		return null;
+	}
+	
+	public static boolean isContains(String source ,ItfType itfType)
+	{
+		return source.indexOf(itfType.getTypeName())>0
+				||source.indexOf(itfType.getSecName())>0 
+				||source.indexOf(itfType.getThridName())>0;
 	}
 
 	public static void getItfType(Map<String,Map<String,Integer>> typeMap,String worktype,String itftype)
