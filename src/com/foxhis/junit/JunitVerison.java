@@ -3,13 +3,16 @@ package com.foxhis.junit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import com.foxhis.trustface.ClassFactory;
@@ -177,5 +180,73 @@ public class JunitVerison {
 		liStrings.put("5",345);
 		return liStrings;
 	}
+	
+	
+	@Test
+	public void tset()
+	{
+		            //T0000220150525100517 000001 8003 8003 8002 09 0.00 70
+		String bill ="T20190416162643 000024 8115            8115    13423878679             3  0.28";
+		System.out.println(splitPhoneBillToMap(bill));
+	}
+	
+	public Map<String, String> splitPhoneBillToMap(String msg)
+	  {
+	    Map mapPhoneBill = new HashMap();
+	    try {
+	      String[] values = msg.split(" +");
+	      System.out.println(values.length);
+	      if (values.length != 8) {
+	        System.out.println(">>> phoneBill format error");
+	        return null;
+	      }
+
+	      String responsePhfolio = "";
+	      String item0 = StringUtils.isNotBlank(values[0]) ? values[0].trim().substring(1) : "";
+
+	      String checkStart = item0.substring(0, 5);
+
+	      String phoneStartTime = item0.substring(5);
+
+	      String call = StringUtils.isNotBlank(values[3]) ? values[3].trim() : "";
+
+	      String called = StringUtils.isNotBlank(values[4]) ? values[4].trim() : "";
+
+	      responsePhfolio = "Q01" + checkStart + phoneStartTime + "1" + "#" + '\r' + '\n';
+	     // sendMsgToComport(responsePhfolio, 1);
+
+	      String item3 = StringUtils.isNotBlank(values[1]) ? values[1].trim() : "";
+	      int interval = 0;
+	      if (StringUtils.isNotBlank(item3)) {
+	        int hour = Integer.parseInt(item3.substring(0, 2));
+	        int minute = Integer.parseInt(item3.substring(2, 4));
+	        int second = Integer.parseInt(item3.substring(4, 6));
+	        interval = hour * 3600 + minute * 60 + second;
+	      }
+
+	      String item1 = StringUtils.isNotBlank(values[1]) ? values[1].trim() : "";
+	      String item2 = StringUtils.isNotBlank(values[2]) ? values[2].trim() : "";
+
+	      if ((StringUtils.isBlank(call)) || (interval == 0) || (StringUtils.isBlank(item1)) || (StringUtils.isBlank(item2)))
+	      {
+	       // logger.info(">>> 话单格式不合法，过滤掉改掉数据");
+	        return null;
+	      }
+	      //Date endDate = SwingUtils.parseDateTime(phoneStartTime, "yyyyMMddHHmmss");
+	     // endDate.setTime(endDate.getTime() + interval * 1000);
+
+	      //mapPhoneBill.put("hotelid", this.hotelId);
+	      mapPhoneBill.put("call", call.trim());
+	      mapPhoneBill.put("called", called.trim());
+	      mapPhoneBill.put("interval", "" + interval);
+	     // mapPhoneBill.put("empno", this.locOperate.getProperty("foxitf.empno"));
+	     // mapPhoneBill.put("end_time", SwingUtils.formatDateTime(endDate, "yyyy-MM-dd HH:mm:ss"));
+	      return mapPhoneBill;
+	    } catch (Exception e) {
+	      String message = "接口分割话单为Map形式失败";
+	     
+	    }
+	    return null;
+	  }
 
 }

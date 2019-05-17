@@ -17,5 +17,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/foxxms/xms350.foxhis.com/pub/lib/jna-4.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/foxxms/xms350.foxhis.com/pub/lib/jnative-1.4RC3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

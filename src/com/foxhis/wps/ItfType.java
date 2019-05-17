@@ -2,10 +2,10 @@ package com.foxhis.wps;
 
 public enum ItfType {
 	//第二个为别名
-	doorcard("门锁","ADEL",""),
-	police("公安","旅业","人像"),
+	doorcard("门锁","第吉尔","西容"),
+	police("公安","旅业","数据同步"),
 	sms("短信","sms",""),
-	pbx("电话","华为",""),
+	pbx("电话","华为","国威"),
 	idcard("身份","身份证",""),
 	ctrlroom("房控","客控",""),
 	vod("VOD","电视",""),
