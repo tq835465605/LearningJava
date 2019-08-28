@@ -72,7 +72,7 @@ public class WeakdayJobs {
 				//System.out.println("itftype:"+itftype);
 				if(itftype==null)
 				{
-					System.err.println(" 匹配接口类型失败，请检查!!!!!!");
+					System.out.println("***********匹配接口类型失败，请检查**********************************");
 					itftype = "其他";
 				}
 				if(string.contains(WorkType.kaifa.getType()))//开发
@@ -238,7 +238,10 @@ public class WeakdayJobs {
 	{
 		return source.indexOf(itfType.getTypeName())>0
 				||source.indexOf(itfType.getSecName())>0 
-				||source.indexOf(itfType.getThridName())>0;
+				||source.indexOf(itfType.getThridName())>0
+				||source.indexOf(itfType.getFourName())>0
+				||source.indexOf(itfType.getFiveName())>0
+				||source.indexOf(itfType.getSixName())>0;
 	}
 
 	public static void getItfType(Map<String,Map<String,Integer>> typeMap,String worktype,String itftype)
