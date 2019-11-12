@@ -8,7 +8,11 @@ public class YuangGenGC {
 	/**
 	 * -verbose:gc -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:SurvivorRatio=5 -XX:+HeapDumpOnOutOfMemoryError
 	 * @author Administrator
-	 *
+	 * -Xms20M -Xmx20M 最大堆内存，最小堆内存，相同的话即可防止堆内存扩展
+	 * -Xmn10M 为年轻代分配10M=10240kb
+	 * -XX:+PrintGCDetails 打印GC回收明细
+	 * -XX:SurvivorRatio=5 即区分为Survivor与eden比，5即s:e=2:5,即一个Survivor=1/7
+	 * -XX:+HeapDumpOnOutOfMemoryError dump出内存堆转存的快照记录
 	 */
 	static class OOMObjece{
 		
