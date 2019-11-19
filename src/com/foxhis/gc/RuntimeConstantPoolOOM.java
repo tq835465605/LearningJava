@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * VM args:-XX:PermSize=10M -XX:MaxPermSize=10M
  * @author Administrator
- *
+ * 指非堆区初始化内存分配大小
  */
 
 public class RuntimeConstantPoolOOM {

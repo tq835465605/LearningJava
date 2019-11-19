@@ -38,6 +38,9 @@
     G1收集器：1.7后发布，标记整理法，准确控制停顿，将整个新，老一起划分区域，优先回收垃圾最多地方。
 2.5 内存分配与回收策略
 
+
+visualvm插件地址：https://visualvm.github.io/uc/release14/updates.html(注意，jdk版本不一样，对应插件也不一样)
+
     
 
 
